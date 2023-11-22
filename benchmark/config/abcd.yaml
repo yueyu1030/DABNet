@@ -1,0 +1,61 @@
+data:
+  dataset: ABCD
+  batch_size: 16 # 16, lr=5e-5
+  test_batch_size: 32
+  val_batch_size: 32
+  train_set: 0.7
+  val_set: 0.1
+  node_feature: /YourPathToDataset/ABCD/abcd_rest-pearson-HCP2016.npy
+  time_series: /YourPathToDataset/ABCD/abcd_rest-timeseires-HCP2016.npy
+  node_id: /YourPathToDataset/ABCD/ids_HCP2016.txt
+  series_id: /YourPathToDataset/ABCD/ids_HCP2016_timeseires.txt
+  label: /YourPathToDataset/ABCD/id2sex.txt
+  path: /YourPathToDataset/
+
+model:
+  # seq, gnn, fbnetgen 
+  type: fbnetgen
+
+  # gru or cnn 
+  
+  extractor_type: cnn
+  embedding_size: 8
+  window_size: 8
+
+  cnn_pool_size: 16
+
+  # product or linear
+  graph_generation: product
+
+  num_gru_layers: 4
+
+  dropout: 0.5
+
+
+train:
+  # normal or bilevel 
+  method: normal
+  seed: 42 #[0, 21, 42, 84, 128] 42
+  lr: 5.0e-5 #2.0e-4 # 1e-4 5e-5
+  lr_causal: 1.0e-3 # 1e-4
+  lambda_1: 1000 # 0.01 >0.05, 0.01 is not sparse? Sparse weight
+  lambda_2: 1000 # 50 # 100 too sparse, 50 is okay? DAG weight 
+  lambda_3: 1 # 0.1
+  lambda_init: 0.005
+  weight_decay: 5.0e-3 #1e-4
+  epochs: 500
+  optimizer: adam
+  gpu: 7
+  ratio: 0.1
+  gen_epoch: 150 #20
+  load_prev_model: true
+
+
+
+  group_loss: true
+  sparsity_loss: true
+  sparsity_loss_weight: 1.0e-4
+  log_folder: result
+  
+  # uniform or pearson
+  pure_gnn_graph: pearson

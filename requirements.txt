@@ -1,0 +1,7 @@
+python 3.8
+pytorch==1.8.0
+scikit-learn
+faiss-cpu==1.6.4
+tqdm>=4.62.2
+networkx
+pyyaml

@@ -1,0 +1,61 @@
+data:
+  dataset: PNC
+  batch_size: 8
+  test_batch_size: 32
+  val_batch_size: 32
+  train_set: 0.7
+  val_set: 0.1
+  node_feature: /YourPathToDataset/PNC_data/514_pearson.npy #/home/xuankan/dataset/PNC_data/514_pearson.npy
+  time_seires: /YourPathToDataset/PNC_data/514_timeseries.npy
+  label: /YourPathToDataset/PNC_data/PNC_Gender_Age.csv
+  gen_graph: ../BNGPU/nobears_benchmark/results/ #/localscratch/Chao_lab/yyu414/brain/DAG-GNN/src/mat/ #
+  gen_graph_name: nobears 
+model:
+  # seq, gnn, fbnetgen 
+  type: fbnetgen
+
+  # gru or cnn 
+  extractor_type: gru
+  embedding_size: 8
+  window_size: 8
+
+  cnn_pool_size: 16
+
+  # product or linear
+  graph_generation: product
+
+  num_gru_layers: 4
+
+  dropout: 0.5
+
+
+
+train:
+  # normal or bilevel 
+  method: normal
+  seed: 42 #[0, 21, 42, 84, 128]
+  lr: 1.0e-4 #1.0e-4
+  lr_causal: 2.5e-4 # 2e-5
+  lambda_1: 0.2 #0.01 # >0.05, 0.01 is not sparse? Sparse weight
+  lambda_2: 100 #50 # 100 too sparse, 50 is okay? DAG weight 
+  lambda_3: 5 # 0.01
+  lambda_init: 0.005
+  weight_decay: 1.0e-3
+  epochs: 500
+  optimizer: adam
+  gpu: 3
+  gen_epoch: 41 # 20
+  ratio: 0.1
+  load_prev_model: true
+
+  group_loss: false
+  sparsity_loss: false
+  dominate_loss: false
+  sparsity_loss_weight: 1.0e-4
+  dominate_loss_weight: 1.0e-5
+  dominate_softmax: true
+  log_folder: result
+  topk: 3
+  
+  # uniform or pearson
+  pure_gnn_graph: pearson
